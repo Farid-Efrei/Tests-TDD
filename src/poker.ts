@@ -21,6 +21,11 @@ export enum Rank {
   Ace = 14,
 }
 
+// Constantes pour la logique du jeu
+const HAND_SIZE = 5;
+const STRAIGHT_SEQUENCE_LENGTH = 4;
+const MIN_CARDS_FOR_BEST_HAND = 5;
+
 export class Card {
   constructor(
     public rank: Rank,
@@ -70,7 +75,7 @@ function checkStraight(cards: Card[]): Card[] | null {
     (a, b) => b - a,
   );
 
-  if (uniqueRanks.length < 5) {
+  if (uniqueRanks.length < HAND_SIZE) {
     return null;
   }
 
@@ -93,8 +98,8 @@ function checkStraight(cards: Card[]): Card[] | null {
   }
 
   // Vérifier une quinte normale
-  for (let i = 0; i <= uniqueRanks.length - 5; i++) {
-    if (uniqueRanks[i] - uniqueRanks[i + 4] === 4) {
+  for (let i = 0; i <= uniqueRanks.length - HAND_SIZE; i++) {
+    if (uniqueRanks[i] - uniqueRanks[i + STRAIGHT_SEQUENCE_LENGTH] === STRAIGHT_SEQUENCE_LENGTH) {
       // Trouvé une quinte
       const straightRanks = uniqueRanks.slice(i, i + 5);
       const straightCards = straightRanks.map(
@@ -125,8 +130,8 @@ function checkFlush(cards: Card[]): Card[] | null {
  * @throws Error si le nombre de cartes n'est pas exactement 5
  */
 export function evaluateFiveCards(cards: Card[]): HandResult {
-  if (cards.length !== 5) {
-    throw new Error("Doit fournir exactement 5 cartes");
+  if (cards.length !== HAND_SIZE) {
+    throw new Error(`Doit fournir exactement ${HAND_SIZE} cartes`);
   }
 
   const sorted = sortCardsByRank(cards);
@@ -248,7 +253,7 @@ export function compareHands(hand1: HandResult, hand2: HandResult): number {
   }
 
   // Même catégorie : comparer les cartes une par une
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < HAND_SIZE; i++) {
     const diff = hand1.cards[i].rank - hand2.cards[i].rank;
     if (diff !== 0) {
       return diff;
@@ -265,11 +270,11 @@ export function compareHands(hand1: HandResult, hand2: HandResult): number {
  * @throws Error si moins de 5 cartes fournies
  */
 export function findBestFiveCardHand(cards: Card[]): HandResult {
-  if (cards.length < 5) {
-    throw new Error("Besoin d'au moins 5 cartes");
+  if (cards.length < MIN_CARDS_FOR_BEST_HAND) {
+    throw new Error(`Besoin d'au moins ${MIN_CARDS_FOR_BEST_HAND} cartes`);
   }
 
-  if (cards.length === 5) {
+  if (cards.length === HAND_SIZE) {
     return evaluateFiveCards(cards);
   }
 
@@ -277,7 +282,7 @@ export function findBestFiveCardHand(cards: Card[]): HandResult {
   const combinations: Card[][] = [];
 
   function combine(start: number, combo: Card[]) {
-    if (combo.length === 5) {
+    if (combo.length === HAND_SIZE) {
       combinations.push([...combo]);
       return;
     }
