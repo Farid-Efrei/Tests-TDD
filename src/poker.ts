@@ -50,14 +50,30 @@ export interface HandResult {
   cards: Card[];
 }
 
+/**
+ * Compare deux cartes par leur rang.
+ * @param card1 - Première carte
+ * @param card2 - Deuxième carte
+ * @returns Nombre positif si card1 > card2, négatif si card1 < card2, 0 si égalité
+ */
 export function compareCards(card1: Card, card2: Card): number {
   return card1.rank - card2.rank;
 }
 
+/**
+ * Trie un tableau de cartes par rang décroissant.
+ * @param cards - Tableau de cartes à trier
+ * @returns Nouveau tableau trié (ne modifie pas l'original)
+ */
 export function sortCardsByRank(cards: Card[]): Card[] {
   return [...cards].sort((a, b) => b.rank - a.rank);
 }
 
+/**
+ * Regroupe les cartes par rang.
+ * @param cards - Tableau de cartes
+ * @returns Map associant chaque rang aux cartes correspondantes
+ */
 function getRankCounts(cards: Card[]): Map<Rank, Card[]> {
   const counts = new Map<Rank, Card[]>();
   for (const card of cards) {
@@ -69,6 +85,12 @@ function getRankCounts(cards: Card[]): Map<Rank, Card[]> {
   return counts;
 }
 
+/**
+ * Vérifie si les 5 cartes forment une quinte (suite).
+ * Gère le cas spécial de la "wheel" (A-2-3-4-5).
+ * @param cards - Tableau de 5 cartes
+ * @returns Cartes de la quinte triées, ou null si pas de quinte
+ */
 function checkStraight(cards: Card[]): Card[] | null {
   const sorted = sortCardsByRank(cards);
   const uniqueRanks = [...new Set(sorted.map((c) => c.rank))].sort(
@@ -112,6 +134,11 @@ function checkStraight(cards: Card[]): Card[] | null {
   return null;
 }
 
+/**
+ * Vérifie si les 5 cartes sont de la même couleur (flush).
+ * @param cards - Tableau de 5 cartes
+ * @returns Cartes triées par rang décroissant, ou null si pas de flush
+ */
 function checkFlush(cards: Card[]): Card[] | null {
   const firstSuit = cards[0].suit;
   const allSameSuit = cards.every((card) => card.suit === firstSuit);
@@ -246,6 +273,12 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   };
 }
 
+/**
+ * Compare deux mains de poker pour déterminer le gagnant.
+ * @param hand1 - Première main à comparer
+ * @param hand2 - Deuxième main à comparer
+ * @returns Nombre positif si hand1 gagne, négatif si hand2 gagne, 0 si égalité
+ */
 export function compareHands(hand1: HandResult, hand2: HandResult): number {
   // Comparer les catégories d'abord
   if (hand1.category !== hand2.category) {
