@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   Card,
   Rank,
@@ -8,9 +7,6 @@ import {
   HandCategory,
   compareHands,
 } from "../src/poker";
-=======
-import { Card, Rank, Suit, compareCards, evaluateFiveCards, HandCategory } from "../src/poker";
->>>>>>> 374d692d95c3a882e633976c95c6b83390960821
 
 describe("Poker - Bases des cartes", () => {
   test("devrait créer une carte avec rang et couleur", () => {
@@ -37,23 +33,16 @@ describe("Poker - High Card", () => {
       new Card(Rank.Five, Suit.Clubs),
       new Card(Rank.Nine, Suit.Diamonds),
       new Card(Rank.Jack, Suit.Spades),
-<<<<<<< HEAD
       new Card(Rank.King, Suit.Hearts),
     ];
-    const result = evaluateFiveCards(cards);
-=======
-      new Card(Rank.King, Suit.Hearts)
-    ];
     
     const result = evaluateFiveCards(cards);
     
->>>>>>> 374d692d95c3a882e633976c95c6b83390960821
     expect(result.category).toBe(HandCategory.HighCard);
     expect(result.cards).toHaveLength(5);
     expect(result.cards[0].rank).toBe(Rank.King);
     expect(result.cards[4].rank).toBe(Rank.Two);
   });
-<<<<<<< HEAD
 
   test("devrait comparer deux high cards correctement", () => {
     const hand1 = {
@@ -66,6 +55,7 @@ describe("Poker - High Card", () => {
         new Card(Rank.Nine, Suit.Spades),
       ],
     };
+    
     const hand2 = {
       category: HandCategory.HighCard,
       cards: [
@@ -76,9 +66,8 @@ describe("Poker - High Card", () => {
         new Card(Rank.Eight, Suit.Diamonds),
       ],
     };
+    
     const comparison = compareHands(hand1, hand2);
     expect(comparison).toBeGreaterThan(0);
   });
-=======
->>>>>>> 374d692d95c3a882e633976c95c6b83390960821
 });
