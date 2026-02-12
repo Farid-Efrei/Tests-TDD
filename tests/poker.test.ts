@@ -7,6 +7,7 @@ import {
   HandCategory,
   compareHands,
   findBestFiveCardHand,
+  findWinners,
 } from "../src/poker";
 
 describe("Poker - Bases des cartes", () => {
@@ -373,5 +374,39 @@ describe("Sélection meilleure main (7 cartes)", () => {
     const result = findBestFiveCardHand(sevenCards);
     
     expect(result.category).toBe(HandCategory.Flush);
+  });
+});
+
+describe("Comparaison multi-joueurs", () => {
+  test("devrait trouver le gagnant parmi plusieurs joueurs", () => {
+    const player1 = [
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.Ace, Suit.Diamonds)
+    ];
+    const player2 = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds)
+    ];
+    const player3 = [
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Diamonds)
+    ];
+    const community = [
+      new Card(Rank.Ace, Suit.Clubs),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.Queen, Suit.Clubs),
+      new Card(Rank.Two, Suit.Spades),
+      new Card(Rank.Three, Suit.Hearts)
+    ];
+    
+    const playerHands = [
+      [...player1, ...community],
+      [...player2, ...community],
+      [...player3, ...community]
+    ];
+    
+    const winners = findWinners(playerHands);
+    
+    expect(winners).toEqual([0]); // Joueur 1 avec brelan d'As
   });
 });
