@@ -1,4 +1,4 @@
-import { Card, Rank, Suit, compareCards } from "../src/poker";
+import { Card, Rank, Suit, compareCards, evaluateFiveCards, HandCategory } from "../src/poker";
 
 describe("Poker - Bases des cartes", () => {
   test("devrait créer une carte avec rang et couleur", () => {
@@ -15,5 +15,24 @@ describe("Poker - Bases des cartes", () => {
     expect(compareCards(aceSpades, kingHearts)).toBeGreaterThan(0);
     expect(compareCards(kingHearts, aceSpades)).toBeLessThan(0);
     expect(compareCards(aceSpades, aceHearts)).toBe(0);
+  });
+});
+
+describe("Poker - High Card", () => {
+  test("devrait identifier une main haute carte", () => {
+    const cards = [
+      new Card(Rank.Two, Suit.Hearts),
+      new Card(Rank.Five, Suit.Clubs),
+      new Card(Rank.Nine, Suit.Diamonds),
+      new Card(Rank.Jack, Suit.Spades),
+      new Card(Rank.King, Suit.Hearts)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.HighCard);
+    expect(result.cards).toHaveLength(5);
+    expect(result.cards[0].rank).toBe(Rank.King);
+    expect(result.cards[4].rank).toBe(Rank.Two);
   });
 });
