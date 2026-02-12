@@ -89,3 +89,22 @@ describe("Poker - One Pair", () => {
     expect(result.cards[1].rank).toBe(Rank.King);
   });
 });
+
+describe("Poker - Two Pair", () => {
+  test("devrait identifier une double paire", () => {
+    const cards = [
+      new Card(Rank.King, Suit.Spades),
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Eight, Suit.Diamonds),
+      new Card(Rank.Eight, Suit.Clubs),
+      new Card(Rank.Three, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.TwoPair);
+    expect(result.cards[0].rank).toBe(Rank.King); // Paire haute
+    expect(result.cards[2].rank).toBe(Rank.Eight); // Paire basse
+    expect(result.cards[4].rank).toBe(Rank.Three); // Kicker
+  });
+});
