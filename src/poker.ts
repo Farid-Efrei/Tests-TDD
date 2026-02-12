@@ -285,3 +285,25 @@ export function findBestFiveCardHand(cards: Card[]): HandResult {
   
   return bestHand;
 }
+
+export function findWinners(playerHands: Card[][]): number[] {
+  const evaluatedHands = playerHands.map(hand => findBestFiveCardHand(hand));
+  
+  let bestHandIndices = [0];
+  let bestHand = evaluatedHands[0];
+  
+  for (let i = 1; i < evaluatedHands.length; i++) {
+    const comparison = compareHands(evaluatedHands[i], bestHand);
+    
+    if (comparison > 0) {
+      // Nouvelle meilleure main
+      bestHand = evaluatedHands[i];
+      bestHandIndices = [i];
+    } else if (comparison === 0) {
+      // Égalité, ajouter à la liste
+      bestHandIndices.push(i);
+    }
+  }
+  
+  return bestHandIndices;
+}
