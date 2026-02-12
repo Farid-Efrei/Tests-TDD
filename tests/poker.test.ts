@@ -71,3 +71,21 @@ describe("Poker - High Card", () => {
     expect(comparison).toBeGreaterThan(0);
   });
 });
+
+describe("Poker - One Pair", () => {
+  test("devrait identifier une paire", () => {
+    const cards = [
+      new Card(Rank.King, Suit.Spades),
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Nine, Suit.Diamonds),
+      new Card(Rank.Seven, Suit.Clubs),
+      new Card(Rank.Three, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.OnePair);
+    expect(result.cards[0].rank).toBe(Rank.King);
+    expect(result.cards[1].rank).toBe(Rank.King);
+  });
+});
