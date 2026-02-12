@@ -194,3 +194,21 @@ describe("Full House", () => {
     expect(result.cards[3].rank).toBe(Rank.Five); // Paire ensuite
   });
 });
+
+describe("Four of a Kind (Carré)", () => {
+  test("devrait identifier un carré", () => {
+    const cards = [
+      new Card(Rank.Jack, Suit.Hearts),
+      new Card(Rank.Jack, Suit.Diamonds),
+      new Card(Rank.Jack, Suit.Clubs),
+      new Card(Rank.Jack, Suit.Spades),
+      new Card(Rank.Three, Suit.Hearts)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.FourOfAKind);
+    expect(result.cards[0].rank).toBe(Rank.Jack); // Les 4 premières
+    expect(result.cards[4].rank).toBe(Rank.Three); // Kicker en dernier
+  });
+});
