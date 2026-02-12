@@ -72,17 +72,36 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
   
-  // Vérifier One Pair
+  // Trouver toutes les paires
+  const pairs: Rank[] = [];
   for (const [rank, cardsOfRank] of rankCounts) {
     if (cardsOfRank.length === 2) {
-      const pairCards = cardsOfRank;
-      const kickers = sorted.filter(c => c.rank !== rank);
-      
-      return {
-        category: HandCategory.OnePair,
-        cards: [...pairCards, ...kickers]
-      };
+      pairs.push(rank);
     }
+  }
+  
+  // Vérifier Two Pair
+  if (pairs.length === 2) {
+    pairs.sort((a, b) => b - a); // Trier paires décroissant
+    const highPair = rankCounts.get(pairs[0])!;
+    const lowPair = rankCounts.get(pairs[1])!;
+    const kicker = sorted.filter(c => c.rank !== pairs[0] && c.rank !== pairs[1]);
+    
+    return {
+      category: HandCategory.TwoPair,
+      cards: [...highPair, ...lowPair, ...kicker]
+    };
+  }
+  
+  // Vérifier One Pair
+  if (pairs.length === 1) {
+    const pairCards = rankCounts.get(pairs[0])!;
+    const kickers = sorted.filter(c => c.rank !== pairs[0]);
+    
+    return {
+      category: HandCategory.OnePair,
+      cards: [...pairCards, ...kickers]
+    };
   }
   
   // High Card
