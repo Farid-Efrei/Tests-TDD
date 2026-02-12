@@ -103,6 +103,17 @@ function checkStraight(cards: Card[]): Card[] | null {
   return null;
 }
 
+function checkFlush(cards: Card[]): Card[] | null {
+  const firstSuit = cards[0].suit;
+  const allSameSuit = cards.every(card => card.suit === firstSuit);
+  
+  if (allSameSuit) {
+    return sortCardsByRank(cards);
+  }
+  
+  return null;
+}
+
 export function evaluateFiveCards(cards: Card[]): HandResult {
   if (cards.length !== 5) {
     throw new Error('Doit fournir exactement 5 cartes');
@@ -110,6 +121,15 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
+  
+  // Vérifier Flush
+  const flushCards = checkFlush(cards);
+  if (flushCards) {
+    return {
+      category: HandCategory.Flush,
+      cards: flushCards
+    };
+  }
   
   // Vérifier Straight
   const straightCards = checkStraight(cards);
