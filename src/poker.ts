@@ -245,3 +245,43 @@ export function compareHands(hand1: HandResult, hand2: HandResult): number {
   
   return 0; // Égalité parfaite
 }
+
+export function findBestFiveCardHand(cards: Card[]): HandResult {
+  if (cards.length < 5) {
+    throw new Error('Besoin d\'au moins 5 cartes');
+  }
+  
+  if (cards.length === 5) {
+    return evaluateFiveCards(cards);
+  }
+  
+  // Générer toutes les combinaisons de 5 cartes parmi n
+  const combinations: Card[][] = [];
+  
+  function combine(start: number, combo: Card[]) {
+    if (combo.length === 5) {
+      combinations.push([...combo]);
+      return;
+    }
+    
+    for (let i = start; i < cards.length; i++) {
+      combo.push(cards[i]);
+      combine(i + 1, combo);
+      combo.pop();
+    }
+  }
+  
+  combine(0, []);
+  
+  // Évaluer toutes les combinaisons et garder la meilleure
+  let bestHand = evaluateFiveCards(combinations[0]);
+  
+  for (let i = 1; i < combinations.length; i++) {
+    const currentHand = evaluateFiveCards(combinations[i]);
+    if (compareHands(currentHand, bestHand) > 0) {
+      bestHand = currentHand;
+    }
+  }
+  
+  return bestHand;
+}
