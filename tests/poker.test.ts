@@ -244,3 +244,65 @@ describe("Straight Flush (Quinte Flush)", () => {
     expect(result.cards[0].rank).toBe(Rank.Ace);
   });
 });
+
+describe("Comparaison de mains avancée", () => {
+  test("deux full house : gagne celui avec le meilleur brelan", () => {
+    const hand1 = evaluateFiveCards([
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.Two, Suit.Spades),
+      new Card(Rank.Two, Suit.Hearts)
+    ]);
+    
+    const hand2 = evaluateFiveCards([
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Diamonds),
+      new Card(Rank.Queen, Suit.Clubs),
+      new Card(Rank.Ace, Suit.Spades),
+      new Card(Rank.Ace, Suit.Hearts)
+    ]);
+    
+    expect(compareHands(hand1, hand2)).toBeGreaterThan(0);
+  });
+  
+  test("deux full house identiques : égalité", () => {
+    const hand1 = evaluateFiveCards([
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.Two, Suit.Spades),
+      new Card(Rank.Two, Suit.Hearts)
+    ]);
+    
+    const hand2 = evaluateFiveCards([
+      new Card(Rank.King, Suit.Spades),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.Two, Suit.Clubs),
+      new Card(Rank.Two, Suit.Diamonds)
+    ]);
+    
+    expect(compareHands(hand1, hand2)).toBe(0);
+  });
+  
+  test("deux paires : gagne celle avec la paire la plus haute", () => {
+    const hand1 = evaluateFiveCards([
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.Ace, Suit.Diamonds),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.King, Suit.Spades),
+      new Card(Rank.Queen, Suit.Hearts)
+    ]);
+    
+    const hand2 = evaluateFiveCards([
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.Queen, Suit.Clubs),
+      new Card(Rank.Queen, Suit.Spades),
+      new Card(Rank.Jack, Suit.Hearts)
+    ]);
+    
+    expect(compareHands(hand1, hand2)).toBeGreaterThan(0);
+  });
+});
