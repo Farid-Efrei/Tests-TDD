@@ -28,6 +28,14 @@ export class Card {
   ) {}
 }
 
+export function compareCards(card1: Card, card2: Card): number {
+  return card1.rank - card2.rank;
+}
+
+export function sortCardsByRank(cards: Card[]): Card[] {
+  return [...cards].sort((a, b) => b.rank - a.rank);
+}
+
 export enum HandCategory {
   HighCard = 1,
   OnePair = 2,
