@@ -1,8 +1,8 @@
 export enum Suit {
-  Hearts = '♥',
-  Diamonds = '♦',
-  Clubs = '♣',
-  Spades = '♠'
+  Hearts = "♥",
+  Diamonds = "♦",
+  Clubs = "♣",
+  Spades = "♠",
 }
 
 export enum Rank {
@@ -18,13 +18,13 @@ export enum Rank {
   Jack = 11,
   Queen = 12,
   King = 13,
-  Ace = 14
+  Ace = 14,
 }
 
 export class Card {
   constructor(
     public rank: Rank,
-    public suit: Suit
+    public suit: Suit,
   ) {}
 }
 
@@ -37,7 +37,7 @@ export enum HandCategory {
   Flush = 6,
   FullHouse = 7,
   FourOfAKind = 8,
-  StraightFlush = 9
+  StraightFlush = 9,
 }
 
 export interface HandResult {
