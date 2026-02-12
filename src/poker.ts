@@ -150,8 +150,18 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
     };
   }
   
-  // Vérifier Flush
+  // Vérifier Straight Flush (doit être vérifié AVANT Flush et Straight séparés)
   const flushCards = checkFlush(cards);
+  const straightCards = checkStraight(cards);
+  
+  if (flushCards && straightCards) {
+    return {
+      category: HandCategory.StraightFlush,
+      cards: straightCards  // Utiliser l'ordre du straight
+    };
+  }
+  
+  // Vérifier Flush
   if (flushCards) {
     return {
       category: HandCategory.Flush,
@@ -160,7 +170,6 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   }
   
   // Vérifier Straight
-  const straightCards = checkStraight(cards);
   if (straightCards) {
     return {
       category: HandCategory.Straight,
