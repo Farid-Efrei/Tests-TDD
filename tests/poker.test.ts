@@ -341,4 +341,37 @@ describe("Sélection meilleure main (7 cartes)", () => {
     
     expect(result.category).toBe(HandCategory.FullHouse);
   });
+  
+  test("devrait choisir le carré plutôt que le full house avec 7 cartes", () => {
+    const sevenCards = [
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.Ace, Suit.Diamonds),
+      new Card(Rank.Ace, Suit.Clubs),
+      new Card(Rank.Ace, Suit.Spades),
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.Two, Suit.Clubs)
+    ];
+    
+    const result = findBestFiveCardHand(sevenCards);
+    
+    expect(result.category).toBe(HandCategory.FourOfAKind);
+    expect(result.cards[0].rank).toBe(Rank.Ace);
+  });
+  
+  test("devrait choisir la couleur plutôt que la suite avec 7 cartes", () => {
+    const sevenCards = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Jack, Suit.Hearts),
+      new Card(Rank.Nine, Suit.Hearts),
+      new Card(Rank.Seven, Suit.Hearts),
+      new Card(Rank.Five, Suit.Hearts),
+      new Card(Rank.Eight, Suit.Diamonds),
+      new Card(Rank.Six, Suit.Clubs)
+    ];
+    
+    const result = findBestFiveCardHand(sevenCards);
+    
+    expect(result.category).toBe(HandCategory.Flush);
+  });
 });
