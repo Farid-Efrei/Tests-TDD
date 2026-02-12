@@ -409,4 +409,38 @@ describe("Comparaison multi-joueurs", () => {
     
     expect(winners).toEqual([0]); // Joueur 1 avec brelan d'As
   });
+  
+  test("devrait retourner plusieurs gagnants en cas d'égalité", () => {
+    const player1 = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Hearts)
+    ];
+    const player2 = [
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.Queen, Suit.Diamonds)
+    ];
+    const player3 = [
+      new Card(Rank.Two, Suit.Clubs),
+      new Card(Rank.Three, Suit.Clubs)
+    ];
+    const community = [
+      new Card(Rank.Ace, Suit.Spades),
+      new Card(Rank.Ace, Suit.Clubs),
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.Jack, Suit.Diamonds),
+      new Card(Rank.Ten, Suit.Spades)
+    ];
+    
+    const playerHands = [
+      [...player1, ...community],
+      [...player2, ...community],
+      [...player3, ...community]
+    ];
+    
+    const winners = findWinners(playerHands);
+    
+    expect(winners.length).toBe(2);
+    expect(winners).toContain(0);
+    expect(winners).toContain(1);
+  });
 });
