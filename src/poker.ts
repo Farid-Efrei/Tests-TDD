@@ -36,6 +36,20 @@ export function sortCardsByRank(cards: Card[]): Card[] {
   return [...cards].sort((a, b) => b.rank - a.rank);
 }
 
+export function evaluateFiveCards(cards: Card[]): HandResult {
+  if (cards.length !== 5) {
+    throw new Error('Doit fournir exactement 5 cartes');
+  }
+  
+  const sorted = sortCardsByRank(cards);
+  
+  // Pour l'instant, retourne toujours High Card
+  return {
+    category: HandCategory.HighCard,
+    cards: sorted
+  };
+}
+
 export enum HandCategory {
   HighCard = 1,
   OnePair = 2,
