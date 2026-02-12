@@ -6,6 +6,7 @@ import {
   evaluateFiveCards,
   HandCategory,
   compareHands,
+  findBestFiveCardHand,
 } from "../src/poker";
 
 describe("Poker - Bases des cartes", () => {
@@ -304,5 +305,40 @@ describe("Comparaison de mains avancée", () => {
     ]);
     
     expect(compareHands(hand1, hand2)).toBeGreaterThan(0);
+  });
+});
+
+describe("Sélection meilleure main (7 cartes)", () => {
+  test("devrait trouver la meilleure combinaison parmi 7 cartes", () => {
+    const sevenCards = [
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Jack, Suit.Hearts),
+      new Card(Rank.Ten, Suit.Hearts),
+      new Card(Rank.Nine, Suit.Diamonds),
+      new Card(Rank.Two, Suit.Clubs)
+    ];
+    
+    const result = findBestFiveCardHand(sevenCards);
+    
+    expect(result.category).toBe(HandCategory.StraightFlush);
+    expect(result.cards[0].rank).toBe(Rank.Ace);
+  });
+  
+  test("devrait choisir full house plutôt que brelan avec 7 cartes", () => {
+    const sevenCards = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.Queen, Suit.Spades),
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Jack, Suit.Diamonds),
+      new Card(Rank.Two, Suit.Clubs)
+    ];
+    
+    const result = findBestFiveCardHand(sevenCards);
+    
+    expect(result.category).toBe(HandCategory.FullHouse);
   });
 });
