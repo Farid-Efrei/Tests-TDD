@@ -212,3 +212,35 @@ describe("Four of a Kind (Carré)", () => {
     expect(result.cards[4].rank).toBe(Rank.Three); // Kicker en dernier
   });
 });
+
+describe("Straight Flush (Quinte Flush)", () => {
+  test("devrait identifier une quinte flush", () => {
+    const cards = [
+      new Card(Rank.Nine, Suit.Hearts),
+      new Card(Rank.Eight, Suit.Hearts),
+      new Card(Rank.Seven, Suit.Hearts),
+      new Card(Rank.Six, Suit.Hearts),
+      new Card(Rank.Five, Suit.Hearts)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.StraightFlush);
+    expect(result.cards[0].rank).toBe(Rank.Nine);
+  });
+  
+  test("devrait identifier une quinte flush royale", () => {
+    const cards = [
+      new Card(Rank.Ace, Suit.Spades),
+      new Card(Rank.King, Suit.Spades),
+      new Card(Rank.Queen, Suit.Spades),
+      new Card(Rank.Jack, Suit.Spades),
+      new Card(Rank.Ten, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.StraightFlush);
+    expect(result.cards[0].rank).toBe(Rank.Ace);
+  });
+});
