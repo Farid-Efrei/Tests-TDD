@@ -53,14 +53,39 @@ export function sortCardsByRank(cards: Card[]): Card[] {
   return [...cards].sort((a, b) => b.rank - a.rank);
 }
 
+function getRankCounts(cards: Card[]): Map<Rank, Card[]> {
+  const counts = new Map<Rank, Card[]>();
+  for (const card of cards) {
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, []);
+    }
+    counts.get(card.rank)!.push(card);
+  }
+  return counts;
+}
+
 export function evaluateFiveCards(cards: Card[]): HandResult {
   if (cards.length !== 5) {
     throw new Error('Doit fournir exactement 5 cartes');
   }
   
   const sorted = sortCardsByRank(cards);
+  const rankCounts = getRankCounts(cards);
   
-  // Pour l'instant, retourne toujours High Card
+  // Vérifier One Pair
+  for (const [rank, cardsOfRank] of rankCounts) {
+    if (cardsOfRank.length === 2) {
+      const pairCards = cardsOfRank;
+      const kickers = sorted.filter(c => c.rank !== rank);
+      
+      return {
+        category: HandCategory.OnePair,
+        cards: [...pairCards, ...kickers]
+      };
+    }
+  }
+  
+  // High Card
   return {
     category: HandCategory.HighCard,
     cards: sorted
