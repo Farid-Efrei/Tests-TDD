@@ -108,3 +108,22 @@ describe("Poker - Two Pair", () => {
     expect(result.cards[4].rank).toBe(Rank.Three); // Kicker
   });
 });
+
+describe("Poker - Three of a Kind", () => {
+  test("devrait identifier un brelan", () => {
+    const cards = [
+      new Card(Rank.Queen, Suit.Spades),
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Diamonds),
+      new Card(Rank.Nine, Suit.Clubs),
+      new Card(Rank.Three, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.ThreeOfAKind);
+    expect(result.cards[0].rank).toBe(Rank.Queen);
+    expect(result.cards[1].rank).toBe(Rank.Queen);
+    expect(result.cards[2].rank).toBe(Rank.Queen);
+  });
+});
