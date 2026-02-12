@@ -443,4 +443,41 @@ describe("Comparaison multi-joueurs", () => {
     expect(winners).toContain(0);
     expect(winners).toContain(1);
   });
+  
+  test("devrait gérer 4 joueurs avec différentes mains", () => {
+    const player1 = [
+      new Card(Rank.Seven, Suit.Hearts),
+      new Card(Rank.Two, Suit.Clubs)
+    ];
+    const player2 = [
+      new Card(Rank.Ace, Suit.Hearts),
+      new Card(Rank.King, Suit.Hearts)
+    ];
+    const player3 = [
+      new Card(Rank.Queen, Suit.Hearts),
+      new Card(Rank.Queen, Suit.Diamonds)
+    ];
+    const player4 = [
+      new Card(Rank.Jack, Suit.Clubs),
+      new Card(Rank.Ten, Suit.Clubs)
+    ];
+    const community = [
+      new Card(Rank.Queen, Suit.Clubs),
+      new Card(Rank.Queen, Suit.Spades),
+      new Card(Rank.Jack, Suit.Hearts),
+      new Card(Rank.Nine, Suit.Diamonds),
+      new Card(Rank.Eight, Suit.Spades)
+    ];
+    
+    const playerHands = [
+      [...player1, ...community],
+      [...player2, ...community],
+      [...player3, ...community],
+      [...player4, ...community]
+    ];
+    
+    const winners = findWinners(playerHands);
+    
+    expect(winners).toEqual([2]); // Joueur 3 avec carré de Dames
+  });
 });
