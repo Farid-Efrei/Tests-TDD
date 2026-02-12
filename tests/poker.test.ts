@@ -176,3 +176,21 @@ describe("Couleur (Flush)", () => {
     expect(result.cards[0].rank).toBe(Rank.King); // Carte la plus haute
   });
 });
+
+describe("Full House", () => {
+  test("devrait identifier un full house", () => {
+    const cards = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.King, Suit.Diamonds),
+      new Card(Rank.King, Suit.Clubs),
+      new Card(Rank.Five, Suit.Spades),
+      new Card(Rank.Five, Suit.Hearts)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.FullHouse);
+    expect(result.cards[0].rank).toBe(Rank.King); // Brelan en premier
+    expect(result.cards[3].rank).toBe(Rank.Five); // Paire ensuite
+  });
+});
