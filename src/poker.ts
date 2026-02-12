@@ -152,6 +152,18 @@ function checkFlush(cards: Card[]): Card[] | null {
 
 /**
  * Évalue une main de 5 cartes et retourne la meilleure catégorie.
+ * 
+ * L'ordre de vérification est crucial pour détecter correctement les mains :
+ * 1. Four of a Kind (rare, vérification rapide via comptage)
+ * 2. Full House (combinaison spécifique de brelan + paire)
+ * 3. Straight Flush (DOIT être vérifié AVANT Flush et Straight séparés)
+ * 4. Flush (5 cartes même couleur)
+ * 5. Straight (5 cartes consécutives)
+ * 6. Three of a Kind (brelan)
+ * 7. Two Pair (deux paires)
+ * 8. One Pair (une paire)
+ * 9. High Card (aucune combinaison)
+ * 
  * @param cards - Tableau de exactement 5 cartes
  * @returns HandResult contenant la catégorie et les cartes triées
  * @throws Error si le nombre de cartes n'est pas exactement 5
