@@ -127,3 +127,20 @@ describe("Poker - Three of a Kind", () => {
     expect(result.cards[2].rank).toBe(Rank.Queen);
   });
 });
+
+describe("Poker - Straight", () => {
+  test("devrait identifier une quinte", () => {
+    const cards = [
+      new Card(Rank.Five, Suit.Spades),
+      new Card(Rank.Six, Suit.Hearts),
+      new Card(Rank.Seven, Suit.Diamonds),
+      new Card(Rank.Eight, Suit.Clubs),
+      new Card(Rank.Nine, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.Straight);
+    expect(result.cards[0].rank).toBe(Rank.Nine); // Carte la plus haute
+  });
+});
