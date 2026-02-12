@@ -72,6 +72,22 @@ function checkStraight(cards: Card[]): Card[] | null {
     return null;
   }
   
+  // Cas spécial: As faible (A-2-3-4-5, "wheel")
+  if (uniqueRanks[0] === Rank.Ace && 
+      uniqueRanks.includes(Rank.Five) &&
+      uniqueRanks.includes(Rank.Four) &&
+      uniqueRanks.includes(Rank.Three) &&
+      uniqueRanks.includes(Rank.Two)) {
+    // Retourner les cartes dans l'ordre 5-4-3-2-A
+    return [
+      sorted.find(c => c.rank === Rank.Five)!,
+      sorted.find(c => c.rank === Rank.Four)!,
+      sorted.find(c => c.rank === Rank.Three)!,
+      sorted.find(c => c.rank === Rank.Two)!,
+      sorted.find(c => c.rank === Rank.Ace)!
+    ];
+  }
+  
   // Vérifier une quinte normale
   for (let i = 0; i <= uniqueRanks.length - 5; i++) {
     if (uniqueRanks[i] - uniqueRanks[i + 4] === 4) {
