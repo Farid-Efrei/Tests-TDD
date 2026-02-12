@@ -122,6 +122,19 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
   
+  // Vérifier Four of a Kind (Carré)
+  for (const [rank, cardsOfRank] of rankCounts) {
+    if (cardsOfRank.length === 4) {
+      const quad = cardsOfRank;
+      const kicker = sorted.filter(c => c.rank !== rank);
+      
+      return {
+        category: HandCategory.FourOfAKind,
+        cards: [...quad, ...kicker]
+      };
+    }
+  }
+  
   // Vérifier Full House (Brelan + Paire)
   const ranks = Array.from(rankCounts.keys());
   const tripletRank = ranks.find(r => rankCounts.get(r)!.length === 3);
