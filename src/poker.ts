@@ -72,6 +72,19 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
   
+  // Vérifier Three of a Kind
+  for (const [rank, cardsOfRank] of rankCounts) {
+    if (cardsOfRank.length === 3) {
+      const triplet = cardsOfRank;
+      const kickers = sortCardsByRank(sorted.filter(c => c.rank !== rank));
+      
+      return {
+        category: HandCategory.ThreeOfAKind,
+        cards: [...triplet, ...kickers]
+      };
+    }
+  }
+  
   // Trouver toutes les paires
   const pairs: Rank[] = [];
   for (const [rank, cardsOfRank] of rankCounts) {
@@ -82,7 +95,7 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   
   // Vérifier Two Pair
   if (pairs.length === 2) {
-    pairs.sort((a, b) => b - a); // Trier paires décroissant
+    pairs.sort((a, b) => b - a);
     const highPair = rankCounts.get(pairs[0])!;
     const lowPair = rankCounts.get(pairs[1])!;
     const kicker = sorted.filter(c => c.rank !== pairs[0] && c.rank !== pairs[1]);
