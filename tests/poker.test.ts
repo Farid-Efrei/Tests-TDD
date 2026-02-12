@@ -143,4 +143,19 @@ describe("Poker - Straight", () => {
     expect(result.category).toBe(HandCategory.Straight);
     expect(result.cards[0].rank).toBe(Rank.Nine); // Carte la plus haute
   });
+
+  test("devrait identifier une quinte avec As faible (wheel)", () => {
+    const cards = [
+      new Card(Rank.Ace, Suit.Spades),
+      new Card(Rank.Two, Suit.Hearts),
+      new Card(Rank.Three, Suit.Diamonds),
+      new Card(Rank.Four, Suit.Clubs),
+      new Card(Rank.Five, Suit.Spades)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.Straight);
+    expect(result.cards[0].rank).toBe(Rank.Five); // Le 5 est la plus haute dans A-2-3-4-5
+  });
 });
