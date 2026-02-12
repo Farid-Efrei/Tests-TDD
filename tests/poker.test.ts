@@ -159,3 +159,20 @@ describe("Poker - Straight", () => {
     expect(result.cards[0].rank).toBe(Rank.Five); // Le 5 est la plus haute dans A-2-3-4-5
   });
 });
+
+describe("Couleur (Flush)", () => {
+  test("devrait identifier une couleur", () => {
+    const cards = [
+      new Card(Rank.King, Suit.Hearts),
+      new Card(Rank.Ten, Suit.Hearts),
+      new Card(Rank.Seven, Suit.Hearts),
+      new Card(Rank.Five, Suit.Hearts),
+      new Card(Rank.Two, Suit.Hearts)
+    ];
+    
+    const result = evaluateFiveCards(cards);
+    
+    expect(result.category).toBe(HandCategory.Flush);
+    expect(result.cards[0].rank).toBe(Rank.King); // Carte la plus haute
+  });
+});
