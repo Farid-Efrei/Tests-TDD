@@ -122,6 +122,21 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
   
+  // Vérifier Full House (Brelan + Paire)
+  const ranks = Array.from(rankCounts.keys());
+  const tripletRank = ranks.find(r => rankCounts.get(r)!.length === 3);
+  const pairRank = ranks.find(r => rankCounts.get(r)!.length === 2);
+  
+  if (tripletRank && pairRank) {
+    const tripletCards = rankCounts.get(tripletRank)!;
+    const pairCards = rankCounts.get(pairRank)!;
+    
+    return {
+      category: HandCategory.FullHouse,
+      cards: [...tripletCards, ...pairCards]
+    };
+  }
+  
   // Vérifier Flush
   const flushCards = checkFlush(cards);
   if (flushCards) {
