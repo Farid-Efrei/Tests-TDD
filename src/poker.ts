@@ -64,6 +64,29 @@ function getRankCounts(cards: Card[]): Map<Rank, Card[]> {
   return counts;
 }
 
+function checkStraight(cards: Card[]): Card[] | null {
+  const sorted = sortCardsByRank(cards);
+  const uniqueRanks = [...new Set(sorted.map(c => c.rank))].sort((a, b) => b - a);
+  
+  if (uniqueRanks.length < 5) {
+    return null;
+  }
+  
+  // Vérifier une quinte normale
+  for (let i = 0; i <= uniqueRanks.length - 5; i++) {
+    if (uniqueRanks[i] - uniqueRanks[i + 4] === 4) {
+      // Trouvé une quinte
+      const straightRanks = uniqueRanks.slice(i, i + 5);
+      const straightCards = straightRanks.map(rank => 
+        sorted.find(c => c.rank === rank)!
+      );
+      return straightCards;
+    }
+  }
+  
+  return null;
+}
+
 export function evaluateFiveCards(cards: Card[]): HandResult {
   if (cards.length !== 5) {
     throw new Error('Doit fournir exactement 5 cartes');
@@ -71,6 +94,15 @@ export function evaluateFiveCards(cards: Card[]): HandResult {
   
   const sorted = sortCardsByRank(cards);
   const rankCounts = getRankCounts(cards);
+  
+  // Vérifier Straight
+  const straightCards = checkStraight(cards);
+  if (straightCards) {
+    return {
+      category: HandCategory.Straight,
+      cards: straightCards
+    };
+  }
   
   // Vérifier Three of a Kind
   for (const [rank, cardsOfRank] of rankCounts) {
