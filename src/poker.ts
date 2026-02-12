@@ -310,6 +310,14 @@ export function compareHands(hand1: HandResult, hand2: HandResult): number {
 
 /**
  * Trouve la meilleure main de 5 cartes parmi n cartes (typiquement 7 pour Texas Hold'em).
+ * 
+ * Algorithme : Génération exhaustive de toutes les combinaisons C(n,5).
+ * - Pour n=7 (Texas Hold'em standard) : C(7,5) = 21 combinaisons
+ * - Complexité : O(C(n,5) × k) où k = coût d'évaluation d'une main
+ * 
+ * Note d'optimisation : Pour n > 10, un algorithme heuristique serait plus efficace,
+ * mais pour Texas Hold'em (n=7), cette approche brute-force est largement suffisante.
+ * 
  * @param cards - Tableau d'au moins 5 cartes
  * @returns HandResult de la meilleure combinaison possible
  * @throws Error si moins de 5 cartes fournies
