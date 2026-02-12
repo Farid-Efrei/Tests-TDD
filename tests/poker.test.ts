@@ -515,3 +515,16 @@ describe("Validation des entrées", () => {
     );
   });
 });
+
+test("devrait identifier une quinte flush avec As faible", () => {
+  const cards = [
+    new Card(Rank.Five, Suit.Diamonds),
+    new Card(Rank.Four, Suit.Diamonds),
+    new Card(Rank.Three, Suit.Diamonds),
+    new Card(Rank.Two, Suit.Diamonds),
+    new Card(Rank.Ace, Suit.Diamonds),
+  ];
+  const result = evaluateFiveCards(cards);
+  expect(result.category).toBe(HandCategory.StraightFlush);
+  expect(result.cards[0].rank).toBe(Rank.Five);
+});
